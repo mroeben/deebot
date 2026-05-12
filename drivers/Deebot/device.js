@@ -627,7 +627,7 @@ class VacuumDevice extends Device {
 	}
 
 	async onCapabilityAlert(boolean, opts) {
-		vacbot.run('GoToPosition', area);
+		// alarm_tamper is a read-only alarm; no device action required.
 	}
 
 	async onCapabilityAutoClean(value, opts) {
