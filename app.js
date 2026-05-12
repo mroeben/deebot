@@ -46,7 +46,10 @@ class Deebot extends Homey.App {
 		})
 
 		this.homey.settings.on('set', (function (dynamicVariableName) {
-			eval(dynamicVariableName + " = this.homey.settings.get(dynamicVariableName)");
+			const knownSettings = ['appdebug', 'libdebug', 'verbose', 'wrap', 'autorefresh'];
+			if (knownSettings.includes(dynamicVariableName)) {
+				global[dynamicVariableName] = this.homey.settings.get(dynamicVariableName);
+			}
 			if (appdebug) { this.log('Settings changed: ' + dynamicVariableName + ' set to ' + this.homey.settings.get(dynamicVariableName)) }
 			if (dynamicVariableName === 'libdebug') {
 				if (this.homey.settings.get('libdebug')) {

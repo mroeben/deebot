@@ -6,7 +6,7 @@ const ecovacsDeebot = require('ecovacs-deebot');
 const stream = require('stream')
 const luxon = require('luxon');
 const EcoVacsAPI = ecovacsDeebot.EcoVacsAPI;
-const SYNC_INTERVAL = 1000 * 30;  // 5 seconds
+const SYNC_INTERVAL = 1000 * 30;  // 30 seconds
 
 class VacuumDevice extends Device {
 
@@ -25,7 +25,10 @@ class VacuumDevice extends Device {
 		}
 
 		this.homey.settings.on('set', (function (dynamicVariableName) {
-			eval(dynamicVariableName + ' = this.homey.settings.get(dynamicVariableName)');
+			const knownSettings = ['appdebug', 'libdebug', 'verbose', 'wrap', 'autorefresh'];
+			if (knownSettings.includes(dynamicVariableName)) {
+				global[dynamicVariableName] = this.homey.settings.get(dynamicVariableName);
+			}
 		}).bind(this));
 
 		let api = global.DeviceAPI;

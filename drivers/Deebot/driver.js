@@ -3,7 +3,7 @@
 const { Driver } = require('homey');
 const ecovacsDeebot = require('ecovacs-deebot');
 const EcoVacsAPI = ecovacsDeebot.EcoVacsAPI;
-const http = require('http');
+const https = require('https');
 
 let continent;
 
@@ -33,7 +33,7 @@ class VacuumDriver extends Driver {
 			password = data.password;
 			let credentialsAreValid = false;
 
-			await httpGetJson('http://ipinfo.io/json').then(async (json) => {
+			await httpGetJson('https://ipinfo.io/json').then(async (json) => {
 				let country = json.country.toLowerCase();
 				continent = ecovacsDeebot.countries[country.toUpperCase()].continent.toLowerCase();
 
@@ -103,7 +103,7 @@ class VacuumDriver extends Driver {
 		let username = data.username;
 		let password = data.password;
 
-		await httpGetJson('http://ipinfo.io/json').then(async (json) => {
+		await httpGetJson('https://ipinfo.io/json').then(async (json) => {
 			let country = json.country.toLowerCase();
 			continent = ecovacsDeebot.countries[country.toUpperCase()].continent.toLowerCase();
 
@@ -127,7 +127,7 @@ class VacuumDriver extends Driver {
 
 function httpGetJson(url) {
 	return new Promise((resolve, reject) => {
-		http.get(url, (res) => {
+		https.get(url, (res) => {
 			res.setEncoding('utf8');
 			let rawData = '';
 			res.on('data', (chunk) => { rawData += chunk; });
